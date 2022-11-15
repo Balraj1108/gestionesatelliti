@@ -1,5 +1,6 @@
 package it.prova.gestionesatelliti.model;
 
-public class StatoSatellite {
+public enum StatoSatellite {
 
+	IN_MOVIMENTO, FISSO, DISATTIVATO
 }
