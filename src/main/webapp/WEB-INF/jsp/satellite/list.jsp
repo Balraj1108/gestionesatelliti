@@ -66,8 +66,9 @@
 											<td>
 												<a class="btn  btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/satellite/show/${impiegatoItem.id }">Visualizza</a>
 												<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="${pageContext.request.contextPath}/satellite/update/${impiegatoItem.id }">Edit</a>
-												<a class="btn btn-outline-danger btn-sm" href="${pageContext.request.contextPath}/satellite/delete/${impiegatoItem.id }">Delete</a>
-												
+												<c:if test="${impiegatoItem.dataRientro != null}">
+													<a class="btn btn-outline-danger btn-sm" href="${pageContext.request.contextPath}/satellite/delete/${impiegatoItem.id }">Delete</a>
+												</c:if>
 												<div class="btn-group">
 													<div>
 														<c:if test="${impiegatoItem.dataLancio == null}">

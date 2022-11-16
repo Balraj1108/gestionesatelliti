@@ -67,7 +67,7 @@ public class SatelliteController {
 		if (!(impiegato.getDataLancio() == null || impiegato.getDataRientro() == null )
 				&& (impiegato.getDataLancio().after(impiegato.getDataRientro())) ) {
 			
-				model.addAttribute("errorMessage","DATE non valide");
+				model.addAttribute("errorMessage","Data di lancio maggiore data di rientro");
 				return "satellite/insert";
 		}
 		
@@ -123,6 +123,13 @@ public class SatelliteController {
 			Model model) {
 
 		impiegato.setId(idImpiegato);
+		
+		if (!(impiegato.getDataLancio() == null || impiegato.getDataRientro() == null )
+				&& (impiegato.getDataLancio().after(impiegato.getDataRientro())) ) {
+			
+				model.addAttribute("errorMessage","Data di lancio maggiore data di rientro");
+				return "satellite/insert";
+		}
 		
 		if (result.hasErrors()) {
 			return "satellite/update";
