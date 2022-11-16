@@ -67,9 +67,58 @@ public class SatelliteController {
 		if (!(impiegato.getDataLancio() == null || impiegato.getDataRientro() == null )
 				&& (impiegato.getDataLancio().after(impiegato.getDataRientro())) ) {
 			
-				model.addAttribute("errorMessage","Data di lancio maggiore data di rientro");
+				result.rejectValue("dataLancio","satellite.datalancio.magiore.datarientro.error");
 				return "satellite/insert";
 		}
+		
+		if (impiegato.getDataLancio() == null && impiegato.getDataRientro() == null && impiegato.getStato() != null) {
+			
+			
+			
+			result.rejectValue("stato","satellite.stato.non.inserito");
+			return "satellite/insert";
+		}
+		
+		if (impiegato.getDataLancio() != null && impiegato.getDataLancio().after(new Date())
+				&& impiegato.getStato() != null) {
+			
+			result.rejectValue("stato","satellite.stato.non.inserito");
+			return "satellite/insert";
+		}
+		
+		if (impiegato.getDataLancio() != null && impiegato.getDataLancio().after(new Date())
+				&& impiegato.getDataRientro() != null && impiegato.getDataRientro().after(new Date())
+				&& impiegato.getStato() != null) {
+			
+			result.rejectValue("stato","satellite.stato.non.inserito");
+			return "satellite/insert";
+		}
+		
+		if (impiegato.getDataRientro() != null && impiegato.getDataLancio() == null) {
+			
+			result.rejectValue("dataLancio","satellite.datalancio.non.inserita");
+			return "satellite/insert";
+		}
+		
+		if (impiegato.getDataLancio() != null && impiegato.getDataRientro() == null
+				&& impiegato.getDataLancio().after(new Date())
+				&& impiegato.getStato() != null) {
+			
+			result.rejectValue("stato","satellite.datalancio.inserita.futura.error");
+			return "satellite/insert";
+		}
+		
+		if (impiegato.getDataLancio() != null 
+				&& impiegato.getDataLancio().before(new Date())
+				&& impiegato.getStato() == null) {
+			
+			result.rejectValue("stato","satellite.datalancio.inserita.passata.error");
+			return "satellite/insert";
+		}
+		
+		
+		
+
 		
 		
 		if (result.hasErrors()) {
@@ -100,8 +149,9 @@ public class SatelliteController {
 			RedirectAttributes redirectAttrs) {
 		
 		
-		//model.addAttribute("show_impiegato_attr", impiegatoService.rimuovi(idImpiegato));
-		//model.getAttribute("show_impiegato_attr", impiegatoService.rimuovi(idImpiegato));
+		
+		
+		
 		impiegatoService.rimuovi(idImpiegato);
 		
 
@@ -127,9 +177,40 @@ public class SatelliteController {
 		if (!(impiegato.getDataLancio() == null || impiegato.getDataRientro() == null )
 				&& (impiegato.getDataLancio().after(impiegato.getDataRientro())) ) {
 			
-				model.addAttribute("errorMessage","Data di lancio maggiore data di rientro");
-				return "satellite/insert";
+			result.rejectValue("dataLancio","satellite.datalancio.magiore.datarientro.error");
+			return "satellite/update";
 		}
+		
+		if (impiegato.getDataRientro() != null && impiegato.getDataLancio() == null) {
+			
+			result.rejectValue("dataLancio","satellite.datalancio.non.inserita");
+			return "satellite/update";
+		}
+		
+		if (impiegato.getDataLancio() != null && impiegato.getDataLancio().after(new Date())
+				&& impiegato.getDataRientro() != null && impiegato.getDataRientro().after(new Date())
+				&& impiegato.getStato() != null) {
+			
+			result.rejectValue("stato","satellite.stato.non.inserito");
+			return "satellite/update";
+		}
+		
+		if (impiegato.getDataLancio() == null && impiegato.getDataRientro() == null && impiegato.getStato() != null) {
+			
+			
+			
+			result.rejectValue("stato","satellite.stato.non.inserito");
+			return "satellite/update";
+		}
+		
+		if (impiegato.getDataLancio() != null && impiegato.getDataLancio().after(new Date())
+				&& impiegato.getStato() != null) {
+			
+			result.rejectValue("stato","satellite.stato.non.inserito");
+			return "satellite/update";
+		}
+		
+		
 		
 		if (result.hasErrors()) {
 			return "satellite/update";
@@ -195,6 +276,12 @@ public class SatelliteController {
 	public String rientro(@RequestParam(name = "idSatellite") Long idImpiegato,
 			RedirectAttributes redirectAttrs, Model model) {
 		Satellite satellite = impiegatoService.caricaSingoloElemento(idImpiegato);
+		if (satellite.getDataLancio() != null
+			&& satellite.getDataLancio().after(new Date())){
+			redirectAttrs.addFlashAttribute("errorMessage", "Non si può far rientrare un satellite ancora non lanciato");
+			return "redirect:/satellite";
+		}
+		
 		if (satellite.getDataLancio() != null) {
 			satellite.setDataRientro(new Date());
 			satellite.setStato(StatoSatellite.DISATTIVATO);
