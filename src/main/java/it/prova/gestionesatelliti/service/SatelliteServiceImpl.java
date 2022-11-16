@@ -102,4 +102,10 @@ public class SatelliteServiceImpl implements SatelliteService {
 		return repository.FindSatellitiDieciAnniOrbita(dataOggi);
 	}
 
+	@Override
+	public List<Satellite> ListAllDaDisabilitare() {
+		// TODO Auto-generated method stub
+		return repository.ListAllDaDisabilitare();
+	}
+
 }

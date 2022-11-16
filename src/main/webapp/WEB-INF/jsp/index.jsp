@@ -47,6 +47,10 @@
 				  ${errorMessage}
 				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
 				</div>
+				<div class="alert alert-success alert-dismissible fade show ${successMessage==null?'d-none':'' }" role="alert">
+				  ${successMessage}
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+				</div>
 			    
 			     <div class="p-5 mb-4 bg-light rounded-3">
 				      <div class="container-fluid py-5">
@@ -55,7 +59,8 @@
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/search">Vai a Ricerca</a>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listDueAnni">Vai alla Lista SatellitiDueAnni</a>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listDisattivati">Vai alla ListaSatellitiDisattivati</a>
-				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listOrbita">Vai a alla ListaSatelliti10AnniOrbita</a>
+				        <a style="margin-top: 3px" class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listOrbita">Vai a alla ListaSatelliti10AnniOrbita</a>
+				        <a style="margin-top: 3px"class="btn btn-danger btn-lg" href="${pageContext.request.contextPath}/satellite/confermaDisabilita">DISABILITA TUTTI</a>
 				      </div>
 			    </div>
 			    

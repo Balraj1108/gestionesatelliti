@@ -20,5 +20,8 @@ public interface SatelliteRepository extends CrudRepository<Satellite, Long>,Jpa
 	@Query("from Satellite s where s.stato = 'FISSO' and s.dataLancio < :dataOggi ")
 	List<Satellite> FindSatellitiDieciAnniOrbita(Date dataOggi);
 	
+	@Query("from Satellite s where not s.stato = 'DISATTIVATO' and s.dataRientro = null")
+	List<Satellite> ListAllDaDisabilitare();
+	
 	
 }

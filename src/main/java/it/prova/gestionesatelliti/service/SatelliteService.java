@@ -24,4 +24,6 @@ public interface SatelliteService {
 	
 	public List<Satellite> FindSatellitiDieciAnniOrbita(Date dataOggi);
 	
+	public List<Satellite> ListAllDaDisabilitare();
+	
 }
