@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
 
 @Controller
@@ -59,11 +60,21 @@ public class SatelliteController {
 
 	@PostMapping("/save")
 	public String save(@Valid @ModelAttribute("insert_impiegato_attr") Satellite impiegato, BindingResult result,
-			RedirectAttributes redirectAttrs) {
+			RedirectAttributes redirectAttrs, Model model) {
 
-		if (result.hasErrors())
+		
+		
+		if (!(impiegato.getDataLancio() == null || impiegato.getDataRientro() == null )
+				&& (impiegato.getDataLancio().after(impiegato.getDataRientro())) ) {
+			
+				model.addAttribute("errorMessage","DATE non valide");
+				return "satellite/insert";
+		}
+		
+		
+		if (result.hasErrors()) {
 			return "satellite/insert";
-
+		}
 		impiegatoService.inserisciNuovo(impiegato);
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
@@ -161,4 +172,31 @@ public class SatelliteController {
 		mv.setViewName("satellite/list");
 		return mv;
 	}
+	
+	@PostMapping("/lancia")
+	public String lancia(@RequestParam(name = "idSatellite") Long idImpiegato,
+			RedirectAttributes redirectAttrs, Model model) {
+		Satellite satellite = impiegatoService.caricaSingoloElemento(idImpiegato);
+		satellite.setDataLancio(new Date());
+		impiegatoService.aggiorna(satellite);
+
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/satellite";
+	}
+	
+	@PostMapping("/rientro")
+	public String rientro(@RequestParam(name = "idSatellite") Long idImpiegato,
+			RedirectAttributes redirectAttrs, Model model) {
+		Satellite satellite = impiegatoService.caricaSingoloElemento(idImpiegato);
+		if (satellite.getDataLancio() != null) {
+			satellite.setDataRientro(new Date());
+			satellite.setStato(StatoSatellite.DISATTIVATO);
+			impiegatoService.aggiorna(satellite);
+		}
+
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/satellite";
+	}
+	
+	
 }

@@ -31,8 +31,9 @@
 						<div class="alert alert-danger " role="alert">
 							Attenzione!! Sono presenti errori di validazione
 						</div>
+						
 					</spring:hasBindErrors>
-			  
+			  		
 			  		<div class="alert alert-danger alert-dismissible fade show ${errorMessage==null?'d-none':'' }" role="alert">
 					  ${errorMessage}
 					  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
@@ -55,6 +56,7 @@
 							<h6 class="card-title">I campi con <span class="text-danger">*</span> sono obbligatori</h6>
 		
 		
+							
 							<form:form modelAttribute="insert_impiegato_attr" method="post" action="save" class="row g-3" novalidate="novalidate">
 							
 							
@@ -109,6 +111,7 @@
 								    </spring:bind>
 								    <form:errors  path="stato" cssClass="error_field" />
 								</div>
+								
 								
 								
 							<div class="col-12">
